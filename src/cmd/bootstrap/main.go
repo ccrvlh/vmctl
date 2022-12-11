@@ -104,7 +104,7 @@ func BootstrapAction(cCtx *cli.Context) error {
 	fmt.Println("Provisioning host...")
 
 	// Checking dependencies
-	fmt.Println("Creating Containerd directories...")
+	fmt.Println("Checking dependencies...")
 	initDependencies(bootConfig, &config.Cfg)
 
 	// Setting Up Containerd

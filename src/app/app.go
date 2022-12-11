@@ -14,9 +14,10 @@ type VMCtlApp struct {
 	Config config.AppConfig
 }
 
-func NewApp(cfg config.AppConfig) VMCtlApp {
-	// Load Configuration
-
+// Builds a new MicroVM CTL Application
+// It takes a previously lodade configuration (AppConfig)
+// Returns a VMCtlApp struct with the CLI Interface and the Config
+func NewApp(cfg *config.AppConfig) VMCtlApp {
 	// Build CLI
 	var cliApp = &cli.App{
 		Name:      "vmctl",
@@ -30,7 +31,7 @@ func NewApp(cfg config.AppConfig) VMCtlApp {
 				Name:   "bootstrap",
 				Usage:  "bootstrap a new server and dependencies",
 				Flags:  bootstrap.BootstrapFlags(),
-				Action: bootstrap.BootstrapAll,
+				Action: bootstrap.BootstrapAction,
 			},
 			{
 				Name:    "complete",
@@ -70,7 +71,8 @@ func NewApp(cfg config.AppConfig) VMCtlApp {
 	// Build Application
 	var app = VMCtlApp{
 		Cli:    *cliApp,
-		Config: cfg,
+		Config: *cfg,
 	}
+
 	return app
 }
