@@ -107,25 +107,22 @@ func BootstrapAction(cCtx *cli.Context) error {
 	fmt.Println("Checking dependencies...")
 	initDependencies(bootConfig, &config.Cfg)
 
+	// Setting up Networking
+	fmt.Println("Setting up network...")
+	initNetwork(bootConfig, &config.Cfg)
+
 	// Setting Up Containerd
 	fmt.Println("Creating Containerd directories...")
 	initContainerd(bootConfig, &config.Cfg)
 
 	// Setup Thin Pool
-	fmt.Println("Setup Thin Pool...")
-	initThinpool(bootConfig, &config.Cfg)
-
-	// Setup Disks
 	fmt.Println("Setup Disks...")
+	initDisks(bootConfig, &config.Cfg)
 
 	// Setup Firecracker
 	// install_firecracker "$fc_version"
 	fmt.Println("Installing Firecracker...")
 	initFirecracker(bootConfig, &config.Cfg)
-
-	// Setting up containerd
-	fmt.Println("Installing Firecracker...")
-	initContainerd(bootConfig, &config.Cfg)
 
 	// Installing Flintlock
 	fmt.Println("Installing Flintlock...")

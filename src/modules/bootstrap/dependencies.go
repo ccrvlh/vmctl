@@ -7,6 +7,8 @@ import (
 	"vmctl/src/config"
 )
 
+// Init
+//
 func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 	var requiredPackages = []string{
 		"thin-provisioning-tools",
@@ -16,6 +18,12 @@ func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 		"wget",
 		"dmsetup",
 		"bc",
+		"qemu",
+		"qemu-kvm",
+		"libvirt-clients",
+		"libvirt-daemon-system",
+		"virtinst",
+		"bridge-utils",
 	}
 
 	// Check whether KVM is Installed
@@ -29,7 +37,7 @@ func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 	fmt.Println("Checking if KVM...")
 	var isKVMInstalled = checkKVM()
 	if !isKVMInstalled {
-		log.Fatal("KVM is not installed, virtualization is need to bootstrap.")
+		log.Fatal("KVM is not installed, virtualization is needed to bootstrap.")
 	}
 
 	// Check whether all dependencies are installed.
@@ -37,14 +45,15 @@ func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 	fmt.Println("Checking for dependencies...")
 	var hasMissingPackages = checkPackages(requiredPackages)
 	if len(hasMissingPackages) != 0 {
-		var msg = fmt.Sprintf("Packages [%s] are required, install it with `apt-get` before proceding", hasMissingPackages)
+		var msg = fmt.Sprintf("Packages %s are required, install it with `apt-get` before proceding", hasMissingPackages)
 		log.Fatal(msg)
 	}
 
+	checkLibvirt()
 }
 
-// ------------------------------------------------------------------
-
+// Helpers
+//
 func checkArch() bool {
 	var cmd = "uname -m"
 	var out, err = exec.Command(cmd).Output()
@@ -82,4 +91,8 @@ func checkPackages(requiredPackages []string) []string {
 		}
 	}
 	return missingPackages
+}
+
+func checkLibvirt() {
+	fmt.Println("Check libvirt is enabled")
 }

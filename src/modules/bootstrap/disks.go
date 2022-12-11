@@ -2,7 +2,7 @@ package bootstrap
 
 import "vmctl/src/config"
 
-func initThinpool(config BootstrapOptions, cfg *config.AppConfig) {
+func initDisks(config BootstrapOptions, cfg *config.AppConfig) {
 	// # if the env is a dev one, then we don't want to use a real disk
 	// # and we want to tag all state dirs with 'dev'
 	// if [[ "$DEVELOPMENT" == false ]]; then

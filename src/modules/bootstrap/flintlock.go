@@ -12,6 +12,7 @@ func initFlintlock(config BootstrapOptions, cfg *config.AppConfig) {
 	// local config_file="$6"
 
 	// install_flintlockd "$version"
+	installFlintlockDaemon()
 
 	// if [[ -z "$parent_iface" ]]; then
 	// 	parent_iface=$(lookup_interface)
@@ -20,12 +21,17 @@ func initFlintlock(config BootstrapOptions, cfg *config.AppConfig) {
 	// 	address=$(lookup_address "$parent_iface")
 	// fi
 	// write_flintlockd_config "$address" "$parent_iface" "$bridge_name" "$insecure" "$config_file"
+	_getParentInterface()
+	writeFlintlockConfig()
 
 	// start_flintlockd_service
 	// say "Flintlockd running at $address:9090 via interface $parent_iface"
+	startFlintlockdService()
 }
 
-func installFlintlockd() {
+func _getParentInterface() {}
+
+func installFlintlockDaemon() {
 
 	// # Fetch and install the flintlockd binary at the specified version
 	// install_flintlockd() {
@@ -47,7 +53,7 @@ func installFlintlockd() {
 	//	}
 }
 
-func WriteFlintlockConfig() {
+func writeFlintlockConfig() {
 
 	// # Write flintlock config to default location
 	// write_flintlockd_config() {
@@ -102,7 +108,7 @@ func WriteFlintlockConfig() {
 	//	}
 }
 
-func StartFlintlockdService() {
+func startFlintlockdService() {
 
 	// # Fetch and start the flintlock systemd service
 	// start_flintlockd_service() {

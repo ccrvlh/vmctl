@@ -1,0 +1,8 @@
+[Unit]
+Description=Flintlock Daemon Service
+
+[Service]
+ExecStart=/usr/sbin/foo-daemon
+
+[Install]
+WantedBy=multi-user.target

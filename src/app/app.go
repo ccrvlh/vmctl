@@ -3,8 +3,8 @@ package app
 import (
 	"fmt"
 	"time"
-	"vmctl/src/cmd/bootstrap"
 	"vmctl/src/config"
+	"vmctl/src/modules/bootstrap"
 
 	"github.com/urfave/cli/v2"
 )
