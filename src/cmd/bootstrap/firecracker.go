@@ -1,5 +1,7 @@
 package bootstrap
 
-func initFirecracker(config BootstrapOptions) {
+import "vmctl/src/config"
+
+func initFirecracker(config BootstrapOptions, cfg *config.AppConfig) {
 
 }

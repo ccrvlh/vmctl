@@ -1,0 +1,100 @@
+
+# MY_NAME:         "flintlock $(basename '$0')",
+# INSTALL_PATH:    "/usr/local/bin",
+# OPT_UNATTENDED:  false,
+# DEVELOPMENT:     false,
+# DEFAULT_VERSION: "latest",
+# DEFAULT_BRANCH:  "main",
+# ARCH:            "amd64",
+
+app_name: "flintlock $(basename '$0')"
+install_path: "/usr/local/bin"
+opt_unattended: false
+development: true
+default_version: "latest"
+default_branch: "main"
+arch: "amd64"
+
+# // Magic calculations, for more information go and read
+# // https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt
+# SECTORSIZE:      512,
+# DATA_BLOCK_SIZE: 128,
+
+# // picked arbitrarily
+# // If free space on the data device drops below this level then a dm event will
+# // be triggered which a userspace daemon should catch allowing it to extend the
+# // pool device.
+# LOW_WATER_MARK: 32768,
+sector_size: 512
+data_block_size: 128
+low_water: 32768
+
+
+# // containerd
+# CONTAINERD_VERSION:     "${CONTAINERD:=$DEFAULT_VERSION}",
+# CONTAINERD_BIN:         "containerd",
+# CONTAINERD_REPO:        "containerd/containerd",
+# CONTAINERD_SYSTEMD_SVC: "",
+# CONTAINERD_CONFIG_PATH:  "",
+# CONTAINERD_ROOT_DIR:     "",
+# CONTAINERD_STATE_DIR:    "",
+# CONTAINERD_SERVICE_FILE: "",
+containerd:
+  version: "${CONTAINERD:=$DEFAULT_VERSION}"
+  bin: "containerd"
+  repo: "containerd/containerd"
+  config_path: ""
+  root_dir: ""
+  repo: ""
+  state_dir: ""
+  service_file: ""
+
+
+# DEVMAPPER_DIR:           "",
+# DEVPOOL_METADATA:        "",
+# DEVPOOL_DATA:            "",
+devmapper:
+  dir: ""
+  pool_metadata: ""
+  pool_data: ""
+
+
+# // firecracker
+# FIRECRACKER_VERSION: "${FIRECRACKER:=$DEFAULT_VERSION}",
+# FIRECRACKER_BIN:     "firecracker",
+# FIRECRACKER_REPO:    "weaveworks/firecracker",
+firecracker:
+  version: "${FIRECRACKER:=$DEFAULT_VERSION}"
+  bin: "firecracker"
+  repo: "weaveworks/firecracker"
+
+
+# // thinpool
+# THINPOOL_PROFILE_PATH: "/etc/lvm/profile",
+# DEFAULT_THINPOOL:      "flintlock",
+# DEFAULT_DEV_THINPOOL:  "flintlock-dev",
+# DATA_SPARSE_SIZE:      "100G",
+# METADATA_SPARSE_SIZE:  "10G",
+thinpool:
+  profile_path: "/etc/lvm/profile"
+  default: "flintlock"
+  default_dev: "flintlock-dev"
+  sparse_size: "100G"
+  metadata_sparse_size: "10G"
+
+
+# // flintlock
+# FLINTLOCK_VERSION:       "${FLINTLOCK:=$DEFAULT_VERSION}",
+# FLINTLOCK_BIN:           "flintlockd",
+# FLINTLOCK_REPO:          "weaveworks/flintlock",
+# FLINTLOCKD_SERVICE_FILE: "/etc/systemd/system/flintlockd.service",
+# FLINTLOCKD_CONFIG_PATH:  "/etc/opt/flintlockd/config.yaml",
+flintlock:
+  version: "${FLINTLOCK:=$DEFAULT_VERSION}"
+  bin: "flintlockd"
+  repo: "weaveworks/flintlock"
+  unit: "/etc/systemd/system/flintlockd.service"
+  config_path: "/etc/opt/flintlockd/config.yaml"
+
+
+

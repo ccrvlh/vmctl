@@ -3,6 +3,8 @@ package auth
 // import (
 // 	"context"
 // 	"encoding/base64"
+// 	"google.golang.org/grpc"
+// 	"google.golang.org/grpc/credentials/insecure"
 // )
 
 // type basicAuth struct {
@@ -24,13 +26,6 @@ package auth
 // func (basicAuth) RequireTransportSecurity() bool {
 // 	return false
 // }
-
-// package dialler
-
-// import (
-// 	"google.golang.org/grpc"
-// 	"google.golang.org/grpc/credentials/insecure"
-// )
 
 // // New process the dial config and returns a grpc.ClientConn. The caller is
 // // responsible for closing the connection.

@@ -1,6 +1,8 @@
 package bootstrap
 
-func initFlintlock(config BootstrapOptions) {
+import "vmctl/src/config"
+
+func initFlintlock(config BootstrapOptions, cfg *config.AppConfig) {
 
 	// local version="$1"
 	// local address="${2%:*}"

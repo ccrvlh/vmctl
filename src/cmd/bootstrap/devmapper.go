@@ -1,5 +1,7 @@
 package bootstrap
 
-func initDevmapper(options BootstrapOptions) {
+import "vmctl/src/config"
+
+func initDevmapper(options BootstrapOptions, cfg *config.AppConfig) {
 
 }

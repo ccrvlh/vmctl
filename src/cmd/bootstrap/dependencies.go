@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"vmctl/src/config"
 )
 
-func initDependencies(config BootstrapOptions) {
+func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 	var requiredPackages = []string{
 		"thin-provisioning-tools",
 		"lvm2",

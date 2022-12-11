@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"fmt"
+	"vmctl/src/config"
 
 	"github.com/urfave/cli/v2"
 )
@@ -70,7 +71,7 @@ func BootstrapFlags() []cli.Flag {
 // Takes the CLI Context and builds the Options object
 // This then can be used by every `init` function for the
 // different methods that will be ran on the bootstrap
-func buildBootstrapConfig(cCtx *cli.Context) BootstrapOptions {
+func buildBootstrapOptions(cCtx *cli.Context) BootstrapOptions {
 	var skipAll = cCtx.Bool("skip-all")
 	var develop = cCtx.Bool("development")
 	var thinpool = cCtx.String("thinpool")
@@ -97,22 +98,22 @@ func buildBootstrapConfig(cCtx *cli.Context) BootstrapOptions {
 // Function that actually bootstraps a Flintlock-enabled server
 // It will run all checks & steps necessary to get a Flintlock server running
 // This includes Containerd, Firecracker, etc.
-func BootstrapAll(cCtx *cli.Context) error {
-	var bootConfig = buildBootstrapConfig(cCtx)
+func BootstrapAction(cCtx *cli.Context) error {
+	var bootConfig = buildBootstrapOptions(cCtx)
 
 	fmt.Println("Provisioning host...")
 
 	// Checking dependencies
 	fmt.Println("Creating Containerd directories...")
-	initDependencies(bootConfig)
+	initDependencies(bootConfig, &config.Cfg)
 
 	// Setting Up Containerd
 	fmt.Println("Creating Containerd directories...")
-	initContainerd(bootConfig)
+	initContainerd(bootConfig, &config.Cfg)
 
 	// Setup Thin Pool
 	fmt.Println("Setup Thin Pool...")
-	initThinpool(bootConfig)
+	initThinpool(bootConfig, &config.Cfg)
 
 	// Setup Disks
 	fmt.Println("Setup Disks...")
@@ -120,15 +121,15 @@ func BootstrapAll(cCtx *cli.Context) error {
 	// Setup Firecracker
 	// install_firecracker "$fc_version"
 	fmt.Println("Installing Firecracker...")
-	initFirecracker(bootConfig)
+	initFirecracker(bootConfig, &config.Cfg)
 
 	// Setting up containerd
 	fmt.Println("Installing Firecracker...")
-	initContainerd(bootConfig)
+	initContainerd(bootConfig, &config.Cfg)
 
 	// Installing Flintlock
 	fmt.Println("Installing Flintlock...")
-	initFlintlock(bootConfig)
+	initFlintlock(bootConfig, &config.Cfg)
 
 	return nil
 }

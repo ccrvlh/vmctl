@@ -1,16 +1,22 @@
 package bootstrap
 
-func initContainerd(config BootstrapOptions) {
+import (
+	"vmctl/src/config"
+	cfg "vmctl/src/config"
+)
+
+func initContainerd(config BootstrapOptions, cfg *config.AppConfig) {
 	// do_all_containerd "$ctrd_version" "$set_thinpool"
-	installContainerd()
+	installContainerd(config, cfg)
 	createContainerdDirectories()
 	writeContainerdConfig()
 	startContainerdService()
 }
 
-func installContainerd() {
+func installContainerd(opts BootstrapOptions, config *cfg.AppConfig) {
+	// fmt.Printf("Installing containerd")
+	// var containerdRepo = "https://github.com"
 	// local tag="$1"
-
 	// say "Installing containerd version $tag to $INSTALL_PATH"
 
 	// if [[ "$version" == "$DEFAULT_VERSION" ]]; then
@@ -20,12 +26,15 @@ func installContainerd() {
 	// bin=$(build_containerd_release_bin_name "$tag" "$ARCH")
 	// url=$(build_download_url "$CONTAINERD_REPO" "$tag" "$bin")
 	// install_release_tar "$url" "$(dirname $INSTALL_PATH)" || die "could not install containerd"
+	// utils.DownloadToPath()
 
 	// "$CONTAINERD_BIN" --version &>/dev/null
 	// ok_or_die "Containerd version $tag not installed"
 
 	// say "Containerd version $tag successfully installed"
 }
+
+func _buildReleaseBinName() {}
 
 func createContainerdDirectories() {
 

@@ -8,8 +8,8 @@ package client
 // 	"google.golang.org/grpc"
 // 	"google.golang.org/protobuf/types/known/emptypb"
 
-// 	"github.com/warehouse-13/hammertime/pkg/dialler"
-// 	"github.com/warehouse-13/hammertime/pkg/utils"
+// 	"vmctl/src/auth"
+// 	"vmctl/src/utils"
 // )
 
 // //go:generate go run github.com/maxbrunsfeld/counterfeiter/v6 -generate
@@ -31,7 +31,7 @@ package client
 
 // // New returns a new flintlock Client.
 // func New(address, basicAuthToken string) (FlintlockClient, error) {
-// 	conn, err := dialler.New(address, basicAuthToken)
+// 	conn, err := auth.New(address, basicAuthToken)
 // 	if err != nil {
 // 		return nil, err
 // 	}
