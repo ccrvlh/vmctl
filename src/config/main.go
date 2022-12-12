@@ -13,6 +13,9 @@ var Cfg AppConfig
 func LoadConfig(cfg *AppConfig) *AppConfig {
 	readFile(cfg)
 	readEnv(cfg)
+	if cfg.Shell == "" {
+		cfg.Shell = os.Getenv("$SHELL")
+	}
 	return cfg
 }
 
@@ -54,6 +57,7 @@ type AppConfig struct {
 	DefaultVersion string `yaml:"default_version" envconfig:"DEFAULT_VERSION"`
 	DefaultBranch  string `yaml:"default_branch" envconfig:"DEFAULT_BRANCH"`
 	Arch           string `yaml:"arch" envconfig:"ARCH"`
+	Shell          string `yaml:"shell" envconfig:"SHELL"`
 
 	// Magic calculations, for more information go and read
 	// https://www.kernel.org/doc/Documentation/device-mapper/thin-provisioning.txt
