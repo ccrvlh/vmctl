@@ -8,7 +8,6 @@ import (
 )
 
 // Init
-//
 func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 	var requiredPackages = []string{
 		"thin-provisioning-tools",
@@ -49,11 +48,17 @@ func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 		log.Fatal(msg)
 	}
 
-	checkLibvirt()
+	// Check whether Libvirt service is enabled and running.
+	fmt.Println("Checking for libvirt...")
+	var libvirtEnabled = checkLibvirt()
+	if !libvirtEnabled {
+		var msg = "Couldn't initialize Libvirt"
+		log.Fatal(msg)
+	}
+
 }
 
 // Helpers
-//
 func checkArch() bool {
 	var cmd = "uname -m"
 	var out, err = exec.Command(cmd).Output()
@@ -93,6 +98,12 @@ func checkPackages(requiredPackages []string) []string {
 	return missingPackages
 }
 
-func checkLibvirt() {
-	fmt.Println("Check libvirt is enabled")
+func checkLibvirt() bool {
+	var cmd = "sudo systemctl start libvirt'"
+	var out, err = exec.Command(cmd).Output()
+	if err != nil {
+		log.Fatal("Couldn't check for KVM")
+	}
+	var exists = string(out[:])
+	return exists != ""
 }

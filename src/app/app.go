@@ -9,7 +9,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-type VMCtlApp struct {
+type MicroApp struct {
 	Cli    cli.App
 	Config config.AppConfig
 }
@@ -17,8 +17,7 @@ type VMCtlApp struct {
 // Builds a new MicroVM CTL Application
 // It takes a previously lodade configuration (AppConfig)
 // Returns a VMCtlApp struct with the CLI Interface and the Config
-func NewApp(cfg *config.AppConfig) VMCtlApp {
-	// Build CLI
+func NewApp(cfg *config.AppConfig) MicroApp {
 	var cliApp = &cli.App{
 		Name:      "vmctl",
 		Usage:     "Interface to interact with MicroVMs through Fintlock",
@@ -32,15 +31,6 @@ func NewApp(cfg *config.AppConfig) VMCtlApp {
 				Usage:  "bootstrap a new server and dependencies",
 				Flags:  bootstrap.BootstrapFlags(),
 				Action: bootstrap.BootstrapAction,
-			},
-			{
-				Name:    "complete",
-				Aliases: []string{"c"},
-				Usage:   "complete a task on the list",
-				Action: func(cCtx *cli.Context) error {
-					fmt.Println("completed task: ", cCtx.Args().First())
-					return nil
-				},
 			},
 			{
 				Name:    "template",
@@ -68,8 +58,7 @@ func NewApp(cfg *config.AppConfig) VMCtlApp {
 		},
 	}
 
-	// Build Application
-	var app = VMCtlApp{
+	var app = MicroApp{
 		Cli:    *cliApp,
 		Config: *cfg,
 	}

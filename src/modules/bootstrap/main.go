@@ -12,7 +12,7 @@ type BootstrapOptions struct {
 	SkipAll            bool   // Autoapprove all prompts
 	ThinPool           string // Name of thinpool (default: flintlock[-dev])
 	Disk               string // Disk to use for DirectLVM thinpool (ignored for dev)
-	gRPCAddress        string // Address for gRPC server (default: 0.0.0.0:9090)
+	gRPCEndpoint       string // Address for gRPC server (default: 0.0.0.0:9090)
 	ParentInterface    string // Interface of the default route of the host
 	Development        bool   // Set up development environment (uses Loop thinpools)
 	FirecrackerVersion string // Firecracker version to use
@@ -44,7 +44,7 @@ func BootstrapFlags() []cli.Flag {
 			Usage: "Disk to use for DirectLVM thinpool (ignored for dev)",
 		},
 		&cli.StringFlag{
-			Name:    "grpc-address",
+			Name:    "grpc-endpoint",
 			Aliases: []string{"b", "grpc"},
 			Value:   "0.0.0.0:9090",
 			Usage:   "Disk to use for DirectLVM thinpool (ignored for dev)",
@@ -76,7 +76,7 @@ func buildBootstrapOptions(cCtx *cli.Context) BootstrapOptions {
 	var develop = cCtx.Bool("development")
 	var thinpool = cCtx.String("thinpool")
 	var disk = cCtx.String("disk")
-	var gRPCAddres = cCtx.String("grpc-address")
+	var gRPCEndpoint = cCtx.String("grpc-endpoint")
 	var FirecrackerVersion = cCtx.String("fc-version")
 	var FlintlockVersion = cCtx.String("fl-version")
 	var ContainerdVersion = cCtx.String("cd-version")
@@ -86,7 +86,7 @@ func buildBootstrapOptions(cCtx *cli.Context) BootstrapOptions {
 		Development:        develop,
 		ThinPool:           thinpool,
 		Disk:               disk,
-		gRPCAddress:        gRPCAddres,
+		gRPCEndpoint:       gRPCEndpoint,
 		FirecrackerVersion: FirecrackerVersion,
 		FlintlockVersion:   FlintlockVersion,
 		ContainerdVersion:  ContainerdVersion,
@@ -107,26 +107,26 @@ func BootstrapAction(cCtx *cli.Context) error {
 	fmt.Println("Checking dependencies...")
 	initDependencies(bootConfig, &config.Cfg)
 
-	// Setting up Networking
-	fmt.Println("Setting up network...")
-	initNetwork(bootConfig, &config.Cfg)
+	// // Setting up Networking
+	// fmt.Println("Setting up network...")
+	// initNetwork(bootConfig, &config.Cfg)
 
-	// Setting Up Containerd
-	fmt.Println("Creating Containerd directories...")
-	initContainerd(bootConfig, &config.Cfg)
+	// // Setting Up Containerd
+	// fmt.Println("Creating Containerd directories...")
+	// initContainerd(bootConfig, &config.Cfg)
 
-	// Setup Thin Pool
-	fmt.Println("Setup Disks...")
-	initDisks(bootConfig, &config.Cfg)
+	// // Setup Thin Pool
+	// fmt.Println("Setup Disks...")
+	// initDisks(bootConfig, &config.Cfg)
 
-	// Setup Firecracker
-	// install_firecracker "$fc_version"
-	fmt.Println("Installing Firecracker...")
-	initFirecracker(bootConfig, &config.Cfg)
+	// // Setup Firecracker
+	// // install_firecracker "$fc_version"
+	// fmt.Println("Installing Firecracker...")
+	// initFirecracker(bootConfig, &config.Cfg)
 
-	// Installing Flintlock
-	fmt.Println("Installing Flintlock...")
-	initFlintlock(bootConfig, &config.Cfg)
+	// // Installing Flintlock
+	// fmt.Println("Installing Flintlock...")
+	// initFlintlock(bootConfig, &config.Cfg)
 
 	return nil
 }
