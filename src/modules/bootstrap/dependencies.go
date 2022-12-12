@@ -1,11 +1,11 @@
 package bootstrap
 
 import (
-	"runtime"
-	"os"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
+	"runtime"
 	"vmctl/src/config"
 )
 
@@ -94,11 +94,18 @@ func checkPackages(requiredPackages []string) []string {
 }
 
 func checkLibvirt() bool {
-	var cmd = "sudo systemctl status libvirt'"
-	var out, err = exec.Command("bash", "-c", cmd).Output()
+	var cmd = "sudo systemctl check libvirtd"
+	var out, err = exec.Command("bash", "-c", cmd).CombinedOutput()
 	if err != nil {
-		log.Fatal("Couldn't check for KVM")
+		if exitErr, ok := err.(*exec.ExitError); ok {
+			fmt.Printf("Libvirtd not running. Startit with: %v\n", exitErr)
+			return false
+		} else {
+			fmt.Printf("failed to check libvirtd: %v", err)
+			os.Exit(1)
+			return false
+		}
 	}
-	var exists = string(out[:])
-	return exists != ""
+	var running = string(out)
+	return running == "active"
 }
