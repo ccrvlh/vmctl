@@ -1,6 +1,8 @@
 package bootstrap
 
 import (
+	"runtime"
+	"os"
 	"fmt"
 	"log"
 	"os/exec"
@@ -60,13 +62,9 @@ func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
 
 // Helpers
 func checkArch() bool {
-	var cmd = "uname -m"
-	var out, err = exec.Command(cmd).Output()
-	if err != nil {
-		log.Fatal("Couldn't check for KVM")
-	}
-	var arch = string(out[:])
-	if arch != "x86_64" {
+	var arch = runtime.GOARCH
+	fmt.Println(arch)
+	if arch != "amd64" {
 		fmt.Printf("Architecture not supported.")
 		return false
 	}
@@ -74,20 +72,17 @@ func checkArch() bool {
 }
 
 func checkKVM() bool {
-	var cmd = "[[ ! -d '/dev/kvm' ]] && echo 'KVM Not Found' || echo ''"
-	var out, err = exec.Command(cmd).Output()
-	if err != nil {
-		log.Fatal("Couldn't check for KVM")
+	if _, err := os.Stat("/dev/kvm"); os.IsNotExist(err) {
+		return false
 	}
-	var exists = string(out[:])
-	return exists != ""
+	return true
 }
 
 func checkPackages(requiredPackages []string) []string {
 	var missingPackages []string
 	for _, value := range requiredPackages {
 		var arg = fmt.Sprintf("apt -qq list %s", value)
-		var out, err = exec.Command(arg).Output()
+		var out, err = exec.Command("bash", "-c", arg).Output()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -99,8 +94,8 @@ func checkPackages(requiredPackages []string) []string {
 }
 
 func checkLibvirt() bool {
-	var cmd = "sudo systemctl start libvirt'"
-	var out, err = exec.Command(cmd).Output()
+	var cmd = "sudo systemctl status libvirt'"
+	var out, err = exec.Command("bash", "-c", cmd).Output()
 	if err != nil {
 		log.Fatal("Couldn't check for KVM")
 	}
