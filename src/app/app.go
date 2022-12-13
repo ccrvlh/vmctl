@@ -1,10 +1,9 @@
 package app
 
 import (
-	"fmt"
 	"time"
 	"vmctl/src/config"
-	"vmctl/src/modules/bootstrap"
+	"vmctl/src/modules/provision"
 
 	"github.com/urfave/cli/v2"
 )
@@ -27,33 +26,38 @@ func NewApp(cfg *config.AppConfig) MicroApp {
 		HelpName:  "MicroVM Control",
 		Commands: []*cli.Command{
 			{
-				Name:   "bootstrap",
-				Usage:  "bootstrap a new server and dependencies",
-				Flags:  bootstrap.BootstrapFlags(),
-				Action: bootstrap.BootstrapAction,
-			},
-			{
-				Name:    "template",
-				Aliases: []string{"t"},
-				Usage:   "options for task templates",
+				Name:   "provision",
+				Usage:  "provisions a new server and dependencies",
+				Flags:  provision.ProvisionFlags(),
+				Action: provision.ProvisionAction,
 				Subcommands: []*cli.Command{
 					{
-						Name:  "add",
-						Usage: "add a new template",
-						Action: func(cCtx *cli.Context) error {
-							fmt.Println("new task template: ", cCtx.Args().First())
-							return nil
-						},
+						Name:  "firecracker",
+						Usage: "provisions Firecracker and it's specific configurations",
 					},
 					{
-						Name:  "remove",
-						Usage: "remove an existing template",
-						Action: func(cCtx *cli.Context) error {
-							fmt.Println("removed task template: ", cCtx.Args().First())
-							return nil
-						},
+						Name:  "devmapper",
+						Usage: "provisions containerd's devmapper and it's specific configurations",
+					},
+					{
+						Name:  "containerd",
+						Usage: "provisions Containerd and it's specific configurations",
+					},
+					{
+						Name:  "thinpool",
+						Usage: "provisions the Thinpool and it's specific configurations",
+					},
+					{
+						Name:  "network",
+						Usage: "provisions the Network and it's specific configurations",
 					},
 				},
+			},
+			{
+				Name:   "check",
+				Usage:  "check if an existing setup is functional",
+				Flags:  provision.ProvisionFlags(),
+				Action: provision.ProvisionAction,
 			},
 		},
 	}

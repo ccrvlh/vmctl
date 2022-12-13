@@ -10,6 +10,9 @@ import (
 	"path/filepath"
 )
 
+// Downloads a given object from a URL to a given Filepath
+// Notes: It doesn't check for file type, and
+// Filepath must complete (eg: /home/ubuntu/mypath)
 func DownloadToPath(url string, filepath string) (err error) {
 	// Create the file
 	out, err := os.Create(filepath)

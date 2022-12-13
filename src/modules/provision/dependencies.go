@@ -1,4 +1,4 @@
-package bootstrap
+package provision
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 // Init
-func initDependencies(options BootstrapOptions, cfg *config.AppConfig) {
+func initDependencies(options ProvisionOptions, cfg *config.AppConfig) {
 	var requiredPackages = []string{
 		"thin-provisioning-tools",
 		"lvm2",
@@ -97,10 +97,10 @@ func checkLibvirt() bool {
 	var _, err = exec.Command("bash", "-c", cmd).CombinedOutput()
 	if err != nil {
 		if exitErr, ok := err.(*exec.ExitError); ok {
-			log.Default().Println("Libvirtd not running. Startit with: %v\n", exitErr)
+			log.Default().Printf("Libvirtd not running. Startit with: %v\n", exitErr)
 			return false
 		} else {
-			log.Default().Println("failed to check libvirtd: %v", err)
+			log.Default().Printf("failed to check libvirtd: %v", err)
 			os.Exit(1)
 			return false
 		}

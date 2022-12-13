@@ -1,4 +1,4 @@
-package bootstrap
+package provision
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 // The struct with all possible bootstrap options
-type BootstrapOptions struct {
+type ProvisionOptions struct {
 	SkipAll            bool   // Autoapprove all prompts
 	ThinPool           string // Name of thinpool (default: flintlock[-dev])
 	Disk               string // Disk to use for DirectLVM thinpool (ignored for dev)
@@ -21,7 +21,7 @@ type BootstrapOptions struct {
 }
 
 // Setup all flags for the bootstrap commands
-func BootstrapFlags() []cli.Flag {
+func ProvisionFlags() []cli.Flag {
 	var bootFlags = []cli.Flag{
 		&cli.BoolFlag{
 			Name:  "skip-all",
@@ -71,7 +71,7 @@ func BootstrapFlags() []cli.Flag {
 // Takes the CLI Context and builds the Options object
 // This then can be used by every `init` function for the
 // different methods that will be ran on the bootstrap
-func buildBootstrapOptions(cCtx *cli.Context) BootstrapOptions {
+func buildProvisionOptions(cCtx *cli.Context) ProvisionOptions {
 	var skipAll = cCtx.Bool("skip-all")
 	var develop = cCtx.Bool("development")
 	var thinpool = cCtx.String("thinpool")
@@ -81,7 +81,7 @@ func buildBootstrapOptions(cCtx *cli.Context) BootstrapOptions {
 	var FlintlockVersion = cCtx.String("fl-version")
 	var ContainerdVersion = cCtx.String("cd-version")
 
-	var newOptions = BootstrapOptions{
+	var newOptions = ProvisionOptions{
 		SkipAll:            skipAll,
 		Development:        develop,
 		ThinPool:           thinpool,
@@ -98,8 +98,8 @@ func buildBootstrapOptions(cCtx *cli.Context) BootstrapOptions {
 // Function that actually bootstraps a Flintlock-enabled server
 // It will run all checks & steps necessary to get a Flintlock server running
 // This includes Containerd, Firecracker, etc.
-func BootstrapAction(cCtx *cli.Context) error {
-	var bootConfig = buildBootstrapOptions(cCtx)
+func ProvisionAction(cCtx *cli.Context) error {
+	var bootConfig = buildProvisionOptions(cCtx)
 
 	fmt.Println("Provisioning host...")
 
@@ -107,13 +107,13 @@ func BootstrapAction(cCtx *cli.Context) error {
 	fmt.Println("Checking dependencies...")
 	initDependencies(bootConfig, &config.Cfg)
 
-	// // Setting up Networking
-	// fmt.Println("Setting up network...")
-	// initNetwork(bootConfig, &config.Cfg)
+	// Setting up Networking
+	fmt.Println("Setting up network...")
+	initNetwork(bootConfig, &config.Cfg)
 
-	// // Setting Up Containerd
-	// fmt.Println("Creating Containerd directories...")
-	// initContainerd(bootConfig, &config.Cfg)
+	// Setting Up Containerd
+	fmt.Println("Creating Containerd directories...")
+	initContainerd(bootConfig, &config.Cfg)
 
 	// // Setup Thin Pool
 	// fmt.Println("Setup Disks...")

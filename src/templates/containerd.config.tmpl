@@ -1,0 +1,20 @@
+version = 2
+
+root = {{ .RootDir }}
+state = {{ .StateDir }} 
+
+[grpc]
+    address = {{ .StateDir }}/containerd.sock
+
+[metrics]
+    address = "{{ .MetricsEndpoint }}"
+
+[plugins]
+    [plugins."io.containerd.snapshotter.v1.devmapper"]
+    pool_name = {{ .Thinpool }}-thinpool"
+    root_path = {{ .DevmapperDir }}
+    base_image_size = "{{ .BaseImageSize }}"
+    discard_blocks = true
+
+[debug]
+    level = "{{ .LogLevel }}"

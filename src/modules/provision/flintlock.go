@@ -1,8 +1,8 @@
-package bootstrap
+package provision
 
 import "vmctl/src/config"
 
-func initFlintlock(config BootstrapOptions, cfg *config.AppConfig) {
+func initFlintlock(config ProvisionOptions, cfg *config.AppConfig) {
 
 	// local version="$1"
 	// local address="${2%:*}"
@@ -21,7 +21,7 @@ func initFlintlock(config BootstrapOptions, cfg *config.AppConfig) {
 	// 	address=$(lookup_address "$parent_iface")
 	// fi
 	// write_flintlockd_config "$address" "$parent_iface" "$bridge_name" "$insecure" "$config_file"
-	_getParentInterface()
+	lookupInterface()
 	writeFlintlockConfig()
 
 	// start_flintlockd_service
@@ -29,7 +29,7 @@ func initFlintlock(config BootstrapOptions, cfg *config.AppConfig) {
 	startFlintlockdService()
 }
 
-func _getParentInterface() {}
+func lookupInterface() {}
 
 func installFlintlockDaemon() {
 

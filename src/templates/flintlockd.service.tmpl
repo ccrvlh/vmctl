@@ -2,7 +2,7 @@
 Description=Flintlock Daemon Service
 
 [Service]
-ExecStart=/usr/sbin/foo-daemon
+ExecStart={{ .BinPath }}
 
 [Install]
 WantedBy=multi-user.target
