@@ -61,13 +61,18 @@ func initDependencies(options ProvisionOptions, cfg *config.AppConfig) {
 }
 
 // Helpers
-func checkArch() bool {
-	var arch = runtime.GOARCH
-	if arch != "amd64" {
+func checkArch(config *config.AppConfig) bool {
+	switch arch := runtime.GOARCH; arch {
+	case "x86_64", "amd64":
+		config.Arch = "amd64"
+		return true
+	case "aarch64", "arm64":
+		config.Arch = "arm64"
+		return true
+	default:
 		fmt.Printf("Architecture not supported.")
 		return false
 	}
-	return true
 }
 
 func checkKVM() bool {

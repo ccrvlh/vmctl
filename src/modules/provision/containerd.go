@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 	"text/template"
 	"vmctl/src/config"
 	"vmctl/src/utils"
@@ -28,14 +29,14 @@ func installContainerd(opts ProvisionOptions, config *config.AppConfig) {
 	// fi
 	var tag = config.Containerd.Version
 	if config.Containerd.Version == config.DefaultVersion {
-		tag = utils.GetLatestReleaseTag()
+		tag = BuildLatestReleaseURL(config.Containerd.Repo)
 	}
 
 	// bin=$(build_containerd_release_bin_name "$tag" "$ARCH")
 	// url=$(build_download_url "$CONTAINERD_REPO" "$tag" "$bin")
 	// install_release_tar "$url" "$(dirname $INSTALL_PATH)" || die "could not install containerd"
-	var binFile = _buildReleaseName(tag, config.Arch)
-	var url = _buildDownloadURL(config, tag, binFile)
+	var binFile = buildContainerdBinaryReleaseName(tag, config)
+	var url = BuildBinaryDownloadURL(config.Containerd.Repo, tag, binFile)
 	utils.DownloadToPath(url, config.InstallPath)
 
 	// "$CONTAINERD_BIN" --version &>/dev/null
@@ -67,7 +68,7 @@ func createContainerdDirectories(opts ProvisionOptions, config *config.AppConfig
 	allDirs = append(allDirs, config.Containerd.SystemdSvc)
 
 	for _, value := range allDirs {
-		os.Mkdir(value, 0600)
+		os.Mkdir(value, 0666)
 	}
 }
 
@@ -109,22 +110,22 @@ func buildContainerdConfigPath(cfg *config.AppConfig) string {
 	return fullPath
 }
 
-// Build the Release Name
-func _buildReleaseName(tag string, arch string) string {
-	return "tagarch"
-}
-
-// Builds a fully qualified Download URL
-// for a given `tag` and desired `binFile`
-// eg: `var downloadURL = _buildDownloadURL(config, "latest", "containerd_amd64")`
-func _buildDownloadURL(config *config.AppConfig, tag string, binFile string) string {
-	return "tagarch"
-}
-
 // Runs `--version` on the containerd binary
 // as a way to ensure the installation succeded
 func _checkCointainerdInstallation(containerdBinary string) bool {
 	var startCmd = fmt.Sprintf("%s --version", containerdBinary)
 	var _, startErr = exec.Command("bash", "-c", startCmd).Output()
 	return startErr == nil
+}
+
+// # Returns containerd release binary name for linux-amd64
+// # If/when we need to support others, we can ammend
+// build_containerd_release_bin_name() {
+// 	local tag=${1//v/} # remove the 'v' from arg $1
+// 	local arch="$2"
+// 	echo "containerd-$tag-linux-$arch.tar.gz"
+// }
+func buildContainerdBinaryReleaseName(tag string, cfg *config.AppConfig) string {
+	var trimmedTag = strings.Replace(tag, "v", "", -1)
+	return fmt.Sprintf("containerd-%s-tag-linux-%s.tar.gz", trimmedTag, cfg.Arch)
 }
