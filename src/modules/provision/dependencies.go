@@ -29,7 +29,7 @@ func initDependencies(options ProvisionOptions, cfg *config.AppConfig) {
 
 	// Check whether KVM is Installed
 	fmt.Println("Checking Architecture...")
-	var archSupported = checkArch()
+	var archSupported = checkArch(cfg)
 	if !archSupported {
 		log.Fatal("Architecture not supported")
 	}
