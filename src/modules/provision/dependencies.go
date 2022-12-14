@@ -9,23 +9,58 @@ import (
 	"vmctl/src/config"
 )
 
-// Init
-func initDependencies(options ProvisionOptions, cfg *config.AppConfig) {
-	var requiredPackages = []string{
-		"thin-provisioning-tools",
-		"lvm2",
-		"git",
-		"curl",
-		"wget",
-		"dmsetup",
-		"bc",
-		"qemu",
-		"qemu-kvm",
-		"libvirt-clients",
-		"libvirt-daemon-system",
-		"virtinst",
-		"bridge-utils",
+var requiredPackages = []string{
+	"thin-provisioning-tools",
+	"lvm2",
+	"git",
+	"curl",
+	"wget",
+	"dmsetup",
+	"bc",
+	"qemu",
+	"qemu-kvm",
+	"libvirt-clients",
+	"libvirt-daemon-system",
+	"virtinst",
+	"bridge-utils",
+}
+
+func CheckDependencies(options ProvisionOptions, cfg *config.AppConfig) {
+
+	// Check whether KVM is Installed
+	fmt.Println("Checking Architecture...")
+	var archSupported = checkArch(cfg)
+	if !archSupported {
+		log.Fatal("Architecture not supported")
 	}
+
+	// Check whether KVM is Installed
+	fmt.Println("Checking if KVM...")
+	var isKVMInstalled = checkKVM()
+	if !isKVMInstalled {
+		log.Fatal("KVM is not installed, virtualization is needed to bootstrap.")
+	}
+
+	// Check whether all dependencies are installed.
+	// It does *not* install anything
+	fmt.Println("Checking for dependencies...")
+	var hasMissingPackages = checkPackages(requiredPackages)
+	if len(hasMissingPackages) != 0 {
+		var msg = fmt.Sprintf("Packages %s are required, install it with `apt-get` before proceding", hasMissingPackages)
+		log.Fatal(msg)
+	}
+
+	// Check whether Libvirt service is enabled and running.
+	fmt.Println("Checking for libvirt...")
+	var libvirtEnabled = checkLibvirt()
+	if !libvirtEnabled {
+		var msg = "Couldn't initialize Libvirt"
+		log.Fatal(msg)
+	}
+}
+
+// Init
+func InstallDependencies(options ProvisionOptions, cfg *config.AppConfig) {
 
 	// Check whether KVM is Installed
 	fmt.Println("Checking Architecture...")

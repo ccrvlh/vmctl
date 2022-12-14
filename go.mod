@@ -4,9 +4,15 @@ go 1.19
 
 require github.com/google/go-github v17.0.0+incompatible
 
-require github.com/kelseyhightower/envconfig v1.4.0 // indirect
+require (
+	github.com/fatih/color v1.7.0 // indirect
+	github.com/kelseyhightower/envconfig v1.4.0 // indirect
+	github.com/mattn/go-colorable v0.1.2 // indirect
+	github.com/mattn/go-isatty v0.0.8 // indirect
+)
 
 require (
+	github.com/briandowns/spinner v1.19.0
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/gdamore/tcell/v2 v2.4.1-0.20210905002822-f057f0a857a1 // indirect

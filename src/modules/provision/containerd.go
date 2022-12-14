@@ -11,17 +11,20 @@ import (
 	"vmctl/src/utils"
 )
 
-func initContainerd(config ProvisionOptions, cfg *config.AppConfig) {
-	// do_all_containerd "$ctrd_version" "$set_thinpool"
-	installContainerd(config, cfg)
-	createContainerdDirectories(config, cfg)
-	renderConfigTemplate(cfg)
-	startContainerdService(config, cfg)
+// func InitContainerd(config ProvisionOptions, cfg *config.AppConfig) {
+// 	// do_all_containerd "$ctrd_version" "$set_thinpool"
+// 	InstallContainerd(config, cfg)
+// 	createContainerdDirectories(config, cfg)
+// 	renderConfigTemplate(cfg)
+// 	startContainerdService(config, cfg)
+// }
+
+func CheckContainerdInstalled(config *config.AppConfig) {
+
 }
 
 // Doers
-//
-func installContainerd(opts ProvisionOptions, config *config.AppConfig) {
+func InstallContainerd(opts ProvisionOptions, config *config.AppConfig) {
 	fmt.Printf("Installing containerd version %s to %s", config.Containerd.Version, config.InstallPath)
 
 	// if [[ "$version" == "$DEFAULT_VERSION" ]]; then
@@ -120,11 +123,12 @@ func _checkCointainerdInstallation(containerdBinary string) bool {
 
 // # Returns containerd release binary name for linux-amd64
 // # If/when we need to support others, we can ammend
-// build_containerd_release_bin_name() {
-// 	local tag=${1//v/} # remove the 'v' from arg $1
-// 	local arch="$2"
-// 	echo "containerd-$tag-linux-$arch.tar.gz"
-// }
+//
+//	build_containerd_release_bin_name() {
+//		local tag=${1//v/} # remove the 'v' from arg $1
+//		local arch="$2"
+//		echo "containerd-$tag-linux-$arch.tar.gz"
+//	}
 func buildContainerdBinaryReleaseName(tag string, cfg *config.AppConfig) string {
 	var trimmedTag = strings.Replace(tag, "v", "", -1)
 	return fmt.Sprintf("containerd-%s-tag-linux-%s.tar.gz", trimmedTag, cfg.Arch)

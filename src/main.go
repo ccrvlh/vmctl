@@ -7,7 +7,7 @@ import (
 	config "vmctl/src/config"
 )
 
-func main() {
+func test() {
 
 	config.LoadConfig(&config.Cfg)
 	var app = app.NewApp(&config.Cfg)

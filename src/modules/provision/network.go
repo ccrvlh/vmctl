@@ -10,7 +10,7 @@ import (
 )
 
 // Initializes dedicated Network to Flintlock
-func initNetwork(opts ProvisionOptions, cfg *config.AppConfig) {
+func SetupNetwork(opts ProvisionOptions, cfg *config.AppConfig) {
 	fmt.Println("Setting up network")
 	renderNetworkTemplate(opts, cfg)
 	defineAndStartNetwork(cfg)

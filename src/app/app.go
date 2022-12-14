@@ -2,8 +2,8 @@ package app
 
 import (
 	"time"
-	"vmctl/src/config"
-	"vmctl/src/modules/provision"
+	"vmctl/src/cli/provision"
+	config "vmctl/src/config"
 
 	"github.com/urfave/cli/v2"
 )
@@ -25,40 +25,8 @@ func NewApp(cfg *config.AppConfig) MicroApp {
 		Copyright: "MIT",
 		HelpName:  "MicroVM Control",
 		Commands: []*cli.Command{
-			{
-				Name:   "provision",
-				Usage:  "provisions a new server and dependencies",
-				Flags:  provision.ProvisionFlags(),
-				Action: provision.ProvisionAction,
-				Subcommands: []*cli.Command{
-					{
-						Name:  "firecracker",
-						Usage: "provisions Firecracker and it's specific configurations",
-					},
-					{
-						Name:  "devmapper",
-						Usage: "provisions containerd's devmapper and it's specific configurations",
-					},
-					{
-						Name:  "containerd",
-						Usage: "provisions Containerd and it's specific configurations",
-					},
-					{
-						Name:  "thinpool",
-						Usage: "provisions the Thinpool and it's specific configurations",
-					},
-					{
-						Name:  "network",
-						Usage: "provisions the Network and it's specific configurations",
-					},
-				},
-			},
-			{
-				Name:   "check",
-				Usage:  "check if an existing setup is functional",
-				Flags:  provision.ProvisionFlags(),
-				Action: provision.ProvisionAction,
-			},
+			provision.NewProvisionCommand(),
+			provision.NewCheckCommand(),
 		},
 	}
 
