@@ -11,3 +11,9 @@ func StartService(serviceName string, config *config.AppConfig) bool {
 	var _, startErr = exec.Command(config.Shell, "-c", startCmd).Output()
 	return startErr == nil
 }
+
+type ActionResult struct {
+	Name    string
+	Status  bool
+	Details string
+}
