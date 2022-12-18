@@ -133,3 +133,57 @@ func buildContainerdBinaryReleaseName(tag string, cfg *config.AppConfig) string 
 	var trimmedTag = strings.Replace(tag, "v", "", -1)
 	return fmt.Sprintf("containerd-%s-tag-linux-%s.tar.gz", trimmedTag, cfg.Arch)
 }
+
+// # Sets various global variables for state paths
+// build_containerd_paths() {
+// 	local tag=""
+
+// 	if [[ "$DEVELOPMENT" == "true" ]]; then
+// 		tag="-dev"
+// 	fi
+
+// 	CONTAINERD_CONFIG_PATH="/etc/containerd/config$tag.toml"
+// 	CONTAINERD_ROOT_DIR="/var/lib/containerd$tag"
+// 	CONTAINERD_STATE_DIR="/run/containerd$tag"
+// 	CONTAINERD_SERVICE_FILE="/etc/systemd/system/containerd$tag.service"
+// 	CONTAINERD_SYSTEMD_SVC="containerd$tag.service"
+// 	DEVMAPPER_DIR="$CONTAINERD_ROOT_DIR/snapshotter/devmapper"
+// 	DEVPOOL_METADATA="$DEVMAPPER_DIR/metadata"
+// 	DEVPOOL_DATA="$DEVMAPPER_DIR/data"
+// }
+
+type ContainerdPaths struct {
+	CONTAINERD_CONFIG_PATH  string
+	CONTAINERD_ROOT_DIR     string
+	CONTAINERD_STATE_DIR    string
+	CONTAINERD_SERVICE_FILE string
+	CONTAINERD_SYSTEMD_SVC  string
+	DEVMAPPER_DIR           string
+	DEVPOOL_METADATA        string
+	DEVPOOL_DATA            string
+}
+
+func BuildContainerdPaths(opts ProvisionOptions) ContainerdPaths {
+	var tagSuffix = ""
+	if opts.Development {
+		tagSuffix = "-dev"
+	}
+	var containerdPaths = ContainerdPaths{
+		CONTAINERD_CONFIG_PATH:  fmt.Sprintf("/etc/containerd/config%s", tagSuffix),
+		CONTAINERD_ROOT_DIR:     fmt.Sprintf("/var/lib/containerd%stag", tagSuffix),
+		CONTAINERD_STATE_DIR:    fmt.Sprintf("/run/containerd%stag", tagSuffix),
+		CONTAINERD_SERVICE_FILE: fmt.Sprintf("/etc/systemd/system/containerd%stag.service", tagSuffix),
+		CONTAINERD_SYSTEMD_SVC:  fmt.Sprintf("containerd%stag.service", tagSuffix),
+		DEVMAPPER_DIR:           fmt.Sprintf("%s/snapshotter/devmapper", "CONTAINERD_ROOT_DIR"),
+		DEVPOOL_METADATA:        fmt.Sprintf("%s/metadata", "DEVMAPPER_DIR"),
+		DEVPOOL_DATA:            fmt.Sprintf("%s/data", "DEVMAPPER_DIR"),
+	}
+	return containerdPaths
+}
+
+// # Set and create the correct state dirs
+// prepare_dirs() {
+// 	build_containerd_paths
+// 	make_containerd_dirs
+// }
+func PrepareContainerdDirectories() {}
