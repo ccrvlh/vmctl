@@ -39,6 +39,14 @@ import (
 // }
 
 // Helpers
+func IsArchSupoprted() error {
+	var _, archSupported = CheckArchitecture(&config.Cfg)
+	if !archSupported {
+		return fmt.Errorf("current architecture not supported")
+	}
+	return nil
+}
+
 func CheckArchitecture(config *config.AppConfig) (string, bool) {
 	switch arch := runtime.GOARCH; arch {
 	case "x86_64", "amd64":

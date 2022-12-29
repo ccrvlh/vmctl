@@ -1,4 +1,4 @@
-package provision
+package packages
 
 import (
 	"fmt"
@@ -37,8 +37,8 @@ func CheckRequiredPackages() (bool, []string) {
 	return true, missingPackages
 }
 
-func InstallRequiredPackages(missingPackages []string) (output []byte, err error) {
-	args := []string{"install", "-y"}
+func InstallMissingPackages(missingPackages []string) (output []byte, err error) {
+	var args = []string{"install", "-y"}
 	for _, pack := range missingPackages {
 		if pack == "" {
 			return nil, fmt.Errorf("apt.Install: Invalid package with empty Name")

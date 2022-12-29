@@ -2,7 +2,8 @@ package app
 
 import (
 	"time"
-	"vmctl/src/cli/provision"
+	packages "vmctl/src/cli/packages"
+	requirements "vmctl/src/cli/requirements"
 	config "vmctl/src/config"
 
 	"github.com/urfave/cli/v2"
@@ -25,8 +26,8 @@ func NewApp(cfg *config.AppConfig) MicroApp {
 		Copyright: "MIT",
 		HelpName:  "MicroVM Control",
 		Commands: []*cli.Command{
-			provision.NewProvisionCommand(),
-			provision.NewCheckCommand(),
+			packages.NewPackageCommand(),
+			requirements.NewRequirementsCommand(),
 		},
 	}
 

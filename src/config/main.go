@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 
@@ -31,14 +32,14 @@ func LoadConfig(cfg *AppConfig) *AppConfig {
 func setMainDefaults(cfg *AppConfig) {
 	var shellEcho, shellErr = exec.Command("sh", "-c", "echo", "$SHELL").Output()
 	if shellErr != nil {
-		fmt.Printf("Couldn't get Shell, defaulting to Bash")
+		log.Printf("Couldn't get Shell, defaulting to Bash")
 	} else {
 		cfg.Shell = string(shellEcho)
 	}
 
 	var homeEcho, homeErr = exec.Command(cfg.Shell, "-c", "echo", "$HOME").Output()
 	if homeErr != nil {
-		fmt.Printf("Couldn't get Home directory, defaulting to /usr/local")
+		log.Printf("Couldn't get Home directory, defaulting to /usr/local")
 		cfg.HomeDir = "/usr/local/.flintlock"
 	} else {
 		cfg.HomeDir = string(homeEcho)
