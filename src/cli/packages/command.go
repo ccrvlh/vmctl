@@ -1,15 +1,40 @@
-package provision
+package packages
 
 import (
 	"fmt"
 	"time"
-	svc "vmctl/src/modules/packages"
-	req "vmctl/src/modules/requirements"
+	req "vmctl/src/cli/requirements"
 	utils "vmctl/src/utils"
 
 	"github.com/briandowns/spinner"
 	"github.com/urfave/cli/v2"
 )
+
+func NewPackageCommand() *cli.Command {
+	var command = &cli.Command{
+		Name:  "packages",
+		Usage: "checks & installs for required system packages",
+		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "dry-run",
+				Value: false,
+				Usage: "Dry run mode",
+			},
+			&cli.BoolFlag{
+				Name:  "check",
+				Value: true,
+				Usage: "Checks if the needed packages are installed",
+			},
+			&cli.BoolFlag{
+				Name:    "update",
+				Aliases: []string{"d", "dev"},
+				Usage:   "Update current installed packages",
+			},
+		},
+		Action: PackageAction,
+	}
+	return command
+}
 
 func PackageAction(cCtx *cli.Context) error {
 	req.IsArchSupoprted()
@@ -47,12 +72,12 @@ func PackageAction(cCtx *cli.Context) error {
 	return nil
 }
 
-func checkRequiredPackages(opts svc.PackagesOptions) ([]string, error) {
+func checkRequiredPackages(opts PackagesOptions) ([]string, error) {
 	var s = spinner.New(spinner.CharSets[14], 100*time.Millisecond)
 	s.Color("white")
 	s.Suffix = " Checking if all required packages are installed..."
 	s.Start()
-	var _, packs = svc.CheckRequiredPackages()
+	var _, packs = CheckRequiredPackages()
 	if len(packs) != 0 {
 		s.Stop()
 		s.FinalMSG = utils.ErrorMsg("Some required packages were not found")
@@ -68,7 +93,7 @@ func installPackages(packages []string) error {
 	s.Color("white")
 	s.Suffix = "○ Installing missing packages..."
 	s.Start()
-	var _, err = svc.InstallMissingPackages(packages)
+	var _, err = InstallMissingPackages(packages)
 	if err != nil {
 		s.Stop()
 		s.FinalMSG = utils.ErrorMsg("There was an error installing some packages")

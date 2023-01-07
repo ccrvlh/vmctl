@@ -2,6 +2,7 @@ package app
 
 import (
 	"time"
+	"vmctl/src/cli/devpool"
 	packages "vmctl/src/cli/packages"
 	requirements "vmctl/src/cli/requirements"
 	config "vmctl/src/config"
@@ -26,8 +27,9 @@ func NewApp(cfg *config.AppConfig) MicroApp {
 		Copyright: "MIT",
 		HelpName:  "MicroVM Control",
 		Commands: []*cli.Command{
-			packages.NewPackageCommand(),
 			requirements.NewRequirementsCommand(),
+			packages.NewPackageCommand(),
+			devpool.NewDevpoolCommand(),
 		},
 	}
 

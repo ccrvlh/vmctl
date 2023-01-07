@@ -667,7 +667,7 @@ monitor_lvm_profile() {
 
 	die -c 1
 }
-
+	
 ## DEVPOOL
 #
 #
@@ -831,6 +831,7 @@ cmd_all() {
 	say "$(date -u +'%F %H:%M:%S %Z'): Host $(hostname) provisioned"
 }
 
+## Packages
 cmd_apt() {
 	say "Installing required apt packages"
 	apt update

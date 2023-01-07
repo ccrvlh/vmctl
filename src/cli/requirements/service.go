@@ -1,4 +1,4 @@
-package provision
+package requirements
 
 import (
 	"fmt"
@@ -9,36 +9,6 @@ import (
 	"vmctl/src/config"
 )
 
-// func CheckDependencies(options ProvisionOptions, cfg *config.AppConfig) {
-
-// 	var results = []utils.ActionResult{}
-
-// 	// Check whether KVM is Installed
-
-// 	// Check whether KVM is Installed
-// 	fmt.Println("Checking if KVM...")
-// 	var kvmResult = utils.ActionResult{Name: "KVM", Status: true, Details: ""}
-// 	var isKVMInstalled = CheckKVM()
-// 	if !isKVMInstalled {
-// 		kvmResult.Status = false
-// 		kvmResult.Details = "KVM not installed, virtualization is needed to bootstrap."
-// 		results = append(results, kvmResult)
-// 	} else {
-// 		kvmResult.Status = false
-// 		archOk := utils.ActionResult{Name: "KVM", Status: true, Details: ""}
-// 		results = append(results, archOk)
-// 	}
-
-// 	// Check whether Libvirt service is enabled and running.
-// 	fmt.Println("Checking for libvirt...")
-// 	var libvirtEnabled = checkLibvirt()
-// 	if !libvirtEnabled {
-// 		var msg = "Couldn't initialize Libvirt"
-// 		log.Fatal(msg)
-// 	}
-// }
-
-// Helpers
 func IsArchSupoprted() error {
 	var _, archSupported = CheckArchitecture(&config.Cfg)
 	if !archSupported {
@@ -83,3 +53,32 @@ func CheckLibvirt() bool {
 	}
 	return true
 }
+
+// func CheckDependencies(options ProvisionOptions, cfg *config.AppConfig) {
+
+// 	var results = []utils.ActionResult{}
+
+// 	// Check whether KVM is Installed
+
+// 	// Check whether KVM is Installed
+// 	fmt.Println("Checking if KVM...")
+// 	var kvmResult = utils.ActionResult{Name: "KVM", Status: true, Details: ""}
+// 	var isKVMInstalled = CheckKVM()
+// 	if !isKVMInstalled {
+// 		kvmResult.Status = false
+// 		kvmResult.Details = "KVM not installed, virtualization is needed to bootstrap."
+// 		results = append(results, kvmResult)
+// 	} else {
+// 		kvmResult.Status = false
+// 		archOk := utils.ActionResult{Name: "KVM", Status: true, Details: ""}
+// 		results = append(results, archOk)
+// 	}
+
+// 	// Check whether Libvirt service is enabled and running.
+// 	fmt.Println("Checking for libvirt...")
+// 	var libvirtEnabled = checkLibvirt()
+// 	if !libvirtEnabled {
+// 		var msg = "Couldn't initialize Libvirt"
+// 		log.Fatal(msg)
+// 	}
+// }

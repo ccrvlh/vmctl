@@ -50,7 +50,7 @@ func setMainDefaults(cfg *AppConfig) {
 // The file path comes from VMCTL_CONFIG_PATH
 // If not provided, default values are used.
 func readFile(cfg *AppConfig) {
-	f, err := os.Open("config.yml")
+	var f, err = os.Open("config.yml")
 	if err != nil {
 		processError(err)
 	}

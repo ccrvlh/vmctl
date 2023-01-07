@@ -12,7 +12,7 @@ import (
 
 // Downloads a given object from a URL to a given Filepath
 // Notes: It doesn't check for file type, and
-// Filepath must complete (eg: /home/ubuntu/mypath)
+// Filepath must be fully qualified (eg: /home/ubuntu/mypath)
 func DownloadToPath(url string, filepath string) (err error) {
 	// Create the file
 	out, err := os.Create(filepath)
@@ -48,18 +48,15 @@ func DownloadToPath(url string, filepath string) (err error) {
 // creating the file structure at 'dst' along the way,
 // and writing any files
 func Untar(dst string, r io.Reader) error {
-
-	gzr, err := gzip.NewReader(r)
+	var gzr, err = gzip.NewReader(r)
 	if err != nil {
 		return err
 	}
 	defer gzr.Close()
-
-	tr := tar.NewReader(gzr)
+	var tr = tar.NewReader(gzr)
 
 	for {
-		header, err := tr.Next()
-
+		var header, err = tr.Next()
 		switch {
 
 		// if no more files are found return
@@ -76,7 +73,7 @@ func Untar(dst string, r io.Reader) error {
 		}
 
 		// the target location where the dir/file should be created
-		target := filepath.Join(dst, header.Name)
+		var target = filepath.Join(dst, header.Name)
 
 		// the following switch could also be done using fi.Mode(), not sure if there
 		// a benefit of using one vs. the other.
